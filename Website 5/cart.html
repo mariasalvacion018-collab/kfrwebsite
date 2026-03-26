@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - KFR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+<body id="top">
+    <!--Navbar-->
+    <header>
+        <a href="index.html" class="logo"><i class='bx bx-cart cart-icon'></i>KFR</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+        <ul class="navbar">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#categories">Categories</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="about.html#about">About</a></li>
+            <li><a id="login-nav-link" href="login.html">Login/Register</a></li>
+        </ul>
+        <div class="profile">
+            <span>Login/Register</span>
+            <i class='bx bx-user'></i>
+        </div>
+    </header>
+
+    <section class="cart-section">
+        <div class="heading">
+            <h1>My <span>Cart</span></h1>
+        </div>
+
+        <div class="cart-container" id="cart-container">
+            <p class="empty-cart">Your cart is empty. <a href="index.html#products">Shop now!</a></p>
+        </div>
+
+        <div class="cart-footer" id="cart-footer" style="display: none;">
+            <div class="cart-total">
+                <strong>Total: ₱<span id="cart-total-price">0.00</span></strong>
+            </div>
+            <button onclick="clearCart()" class="clear-cart-btn">Clear Cart</button>
+<a href="checkout.html" class="btn checkout-btn">Checkout</a>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+    <script>
+        // Cart page specific
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavbar();
+            updateCartCount(); // Navbar counter
+            loadCartPage();
+        });
+
+        function loadCartPage() {
+            const cart = getCart();
+            const container = document.getElementById('cart-container');
+            const footer = document.getElementById('cart-footer');
+            const totalEl = document.getElementById('cart-total-price');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="empty-cart">Your cart is empty. <a href="index.html#products">Shop now!</a></p>';
+                footer.style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <h3>${item.name}</h3>
+                        <p>₱${item.price}</p>
+                    </div>
+                    <div class="cart-qty">
+                        <button onclick="changeQty(${index}, -1)" class="qty-btn">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="changeQty(${index}, 1)" class="qty-btn">+</button>
+                    </div>
+                    <div class="cart-price">₱${(item.price * item.quantity).toFixed(2)}</div>
+                    <button onclick="removeItem(${index})" class="remove-btn">Remove</button>
+                </div>
+            `).join('');
+
+            const total = calculateTotal(cart);
+            totalEl.textContent = total.toFixed(2);
+            footer.style.display = 'flex';
+        }
+
+        function changeQty(index, delta) {
+            const cart = getCart();
+            if (cart[index]) {
+                cart[index].quantity = Math.max(1, cart[index].quantity + delta);
+                if (cart[index].quantity === 0) {
+                    cart.splice(index, 1);
+                }
+                saveCart(cart);
+                loadCartPage();
+                updateCartCount();
+            }
+        }
+
+        function removeItem(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            loadCartPage();
+            updateCartCount();
+        }
+
+        const continueShoppingBtn = document.getElementById('continue-shopping-btn');
+        if (continueShoppingBtn) {
+            continueShoppingBtn.addEventListener('click', () => {
+                localStorage.setItem('kfr-last-filter', 'all');
+            });
+        }
+    </script>
+</body>
+</html>

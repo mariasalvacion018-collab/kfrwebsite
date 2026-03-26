@@ -1,0 +1,786 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - KFR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <style>
+        :root {
+            --green-color: #2d5a27;
+            --light-green-color: #7cb342;
+            --orange-color: #ff7e00;
+            --light-orange-color: #f75f1d;
+            --bg-color: #f8fcf9;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #f0fae7 100%);
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, rgba(45, 90, 39, 0.95) 0%, rgba(124, 179, 66, 0.95) 100%);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(45, 90, 39, 0.2);
+            color: white;
+        }
+
+        .admin-header h1 {
+            margin: 0 0 5px 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .admin-header p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(45, 90, 39, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(45, 90, 39, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green-color), var(--orange-color));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(45, 90, 39, 0.15);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 12px 0;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--green-color), var(--light-green-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 15px rgba(45, 90, 39, 0.08);
+            border: 1px solid rgba(45, 90, 39, 0.05);
+            overflow-x: auto;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            color: var(--green-color);
+            border-bottom: 3px solid var(--light-green-color);
+            padding-bottom: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 12px 16px;
+            width: 100%;
+            max-width: 350px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--green-color);
+            box-shadow: 0 0 0 4px rgba(45, 90, 39, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        th {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f6f0 100%);
+            font-weight: 700;
+            color: var(--green-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: rgba(45, 90, 39, 0.02);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-color), var(--light-green-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45, 90, 39, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
+            color: white;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-banned {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-open {
+            background-color: #cfe9ff;
+            color: #084298;
+        }
+
+        .status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+            border: none;
+            background: none;
+        }
+
+        .modal-close:hover {
+            color: var(--green-color);
+        }
+
+        .ticket-details {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--green-color);
+        }
+
+        .ticket-details p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .ticket-details strong {
+            color: var(--green-color);
+        }
+
+        .response-form {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .response-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .response-form textarea:focus {
+            outline: none;
+            border-color: var(--green-color);
+            box-shadow: 0 0 0 4px rgba(45, 90, 39, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 24px;
+            }
+
+            .admin-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 16px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+                margin-right: 4px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--Navbar-->
+    <header>
+        <a href="index.html" class="logo" aria-label="Kanto Familia Restaurant homepage">
+            <i class='bx bx-store-alt'></i> KFR
+        </a>
+        <div class="bx bx-menu" id="menu-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false" tabindex="0"></div>
+        <ul class="navbar" aria-label="Main navigation">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#categories">Categories</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="help.html">Help & Support</a></li>
+            <li><a id="login-nav-link" href="login.html">Login/Register</a></li>
+        </ul>
+        <div class="profile" aria-label="Profile" role="button">
+            <i class='bx bx-user' aria-hidden="true"></i>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Manage users, orders, reservations and support</p>
+            </div>
+            <button class="btn btn-danger" onclick="logout()" style="margin-right: 0;">
+                <i class='bx bx-log-out'></i> Logout
+            </button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
+        <div class="section">
+            <h2><i class='bx bx-users' style="margin-right: 8px;"></i>Users Management</h2>
+            <div class="search-box">
+                <input type="text" id="userSearch" placeholder="Search by username or email...">
+            </div>
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Users will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2><i class='bx bx-cart-alt' style="margin-right: 8px;"></i>Orders</h2>
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Orders will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2><i class='bx bx-calendar-check' style="margin-right: 8px;"></i>Reservations</h2>
+            <table id="reservationsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Reservations will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2><i class='bx bx-support' style="margin-right: 8px;"></i>Support Tickets</h2>
+            <table id="supportTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Support tickets will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Ticket Response Modal -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeTicketModal()">&times;</button>
+            <div id="ticketModalBody"></div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        function renderAdminData() {
+            const user = getCurrentUser();
+            if (!user || !isAdminUser(user)) {
+                alert('Admin access required');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const guests = users.filter(u => u.role !== 'admin');
+            const ordersData = getOrderStatistics();
+            const reservations = JSON.parse(localStorage.getItem('tableReservations') || '[]');
+            const supportTickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <p>${users.length}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Guest Users</h3>
+                    <p>${guests.length}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p>${ordersData.totalOrders}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Reservations</h3>
+                    <p>${reservations.length}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Sales</h3>
+                    <p>₱${ordersData.totalSales.toFixed(2)}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Support Tickets</h3>
+                    <p>${supportTickets.length}</p>
+                </div>
+            `;
+
+            const usersBody = document.querySelector('#usersTable tbody');
+            usersBody.innerHTML = guests.map(u => `
+                <tr>
+                    <td>${u.username || 'N/A'}</td>
+                    <td>${u.email}</td>
+                    <td><span class="status-badge" style="background: #e3f2fd; color: #1976d2;">${u.role || 'guest'}</span></td>
+                    <td><span class="status-badge ${u.banned ? 'status-banned' : 'status-active'}">${u.banned ? 'Banned' : 'Active'}</span></td>
+                    <td>
+                        <button class="btn ${u.banned ? 'btn-success' : 'btn-danger'}" onclick="toggleBanUser('${u.email}')" style="padding:6px 10px; font-size:12px;">${u.banned ? 'Unban' : 'Ban'}</button>
+                        ${u.role === 'guest' ? `<button class="btn btn-primary" onclick="promoteUserToAdmin('${u.email}')" style="padding:6px 10px; font-size:12px;">Promote</button>` : ''}
+                        <button class="btn btn-danger" onclick="deleteGuestUser('${u.email}')" style="padding:6px 10px; font-size:12px;">Delete</button>
+                    </td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #999;">No users found</td></tr>';
+
+            const ordersBody = document.querySelector('#ordersTable tbody');
+            ordersBody.innerHTML = ordersData.orders.slice(0, 50).map((order, idx) => `
+                <tr>
+                    <td><strong>#${idx + 1}</strong></td>
+                    <td>${order.date}</td>
+                    <td>${order.billing?.name || order.billing?.email || 'Guest Order'}</td>
+                    <td><strong>₱${(order.total || 0).toFixed(2)}</strong></td>
+                    <td><span class="status-badge" style="background: #d4edda; color: #155724;">${order.status || 'Completed'}</span></td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #999;">No orders found</td></tr>';
+
+            const reservationsBody = document.querySelector('#reservationsTable tbody');
+            reservationsBody.innerHTML = reservations.map(r => `
+                <tr>
+                    <td><strong>#${r.id || 'N/A'}</strong></td>
+                    <td>${r.name || 'N/A'}</td>
+                    <td>${r.date || 'N/A'}</td>
+                    <td>${r.time || 'N/A'}</td>
+                    <td><strong>${r.guestCount || r.guests || 'N/A'}</strong></td>
+                    <td><span class="status-badge ${r.status === 'confirmed' ? 'status-active' : r.status === 'cancelled' ? 'status-banned' : 'status-pending'}">${r.status || 'pending'}</span></td>
+                    <td>
+                        <button class="btn btn-success" onclick="updateReservationStatus(${r.id}, 'confirmed')" style="padding:6px 10px; font-size:12px;">Confirm</button>
+                        <button class="btn btn-danger" onclick="updateReservationStatus(${r.id}, 'cancelled')" style="padding:6px 10px; font-size:12px;">Cancel</button>
+                    </td>
+                </tr>
+            `).join('') || '<tr><td colspan="7" style="text-align: center; padding: 30px; color: #999;">No reservations found</td></tr>';
+
+            const supportBody = document.querySelector('#supportTable tbody');
+            supportBody.innerHTML = supportTickets.map(t => `
+                <tr>
+                    <td><strong>#${t.id || 'N/A'}</strong></td>
+                    <td>${t.subject || 'N/A'}</td>
+                    <td><span class="status-badge ${t.status === 'resolved' ? 'status-resolved' : 'status-open'}">${t.status || 'open'}</span></td>
+                    <td>${t.date || new Date().toLocaleDateString()}</td>
+                    <td><button class="btn btn-primary" onclick="openTicketModal(${t.id})" style="padding:6px 10px; font-size:12px;">View & Reply</button></td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #999;">No support tickets found</td></tr>';
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTable tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        function toggleBanUser(email) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email);
+            if (user) {
+                user.banned = !user.banned;
+                localStorage.setItem('users', JSON.stringify(users));
+                alert('User ' + (user.banned ? 'banned' : 'unbanned') + ' successfully!');
+                renderAdminData();
+            }
+        }
+
+        function promoteUserToAdmin(email) {
+            if (!confirm('Promote this user to admin?')) return;
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email);
+            if (user) {
+                user.role = 'admin';
+                localStorage.setItem('users', JSON.stringify(users));
+                alert('User promoted successfully!');
+                renderAdminData();
+            }
+        }
+
+        function deleteGuestUser(email) {
+            if (!confirm('Delete this user?')) return;
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            users = users.filter(u => u.email !== email);
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('User deleted successfully!');
+            renderAdminData();
+        }
+
+        function updateReservationStatus(id, status) {
+            const reservations = JSON.parse(localStorage.getItem('tableReservations') || '[]');
+            const reservation = reservations.find(r => r.id === id);
+            if (reservation) {
+                reservation.status = status;
+                localStorage.setItem('tableReservations', JSON.stringify(reservations));
+                alert('Reservation ' + status + ' successfully!');
+                renderAdminData();
+            }
+        }
+
+        function respondToTicket(ticketId) {
+            const tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (!ticket) {
+                alert('Ticket not found');
+                return;
+            }
+            openTicketModal(ticketId);
+        }
+
+        function openTicketModal(ticketId) {
+            const tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            const ticket = tickets.find(t => t.id === ticketId);
+            
+            if (!ticket) {
+                alert('Ticket not found');
+                return;
+            }
+
+            const statusClass = ticket.status === 'resolved' ? 'status-resolved' : 'status-open';
+            const modalBody = `
+                <h2 style="margin-top: 0; color: var(--green-color);">Ticket #${ticket.id}</h2>
+                
+                <div class="ticket-details">
+                    <p><strong>Subject:</strong> ${ticket.subject || 'N/A'}</p>
+                    <p><strong>From:</strong> ${ticket.name || 'N/A'} (${ticket.email || 'N/A'})</p>
+                    <p><strong>Category:</strong> ${ticket.category || 'General'}</p>
+                    <p><strong>Date Submitted:</strong> ${ticket.date || 'N/A'}</p>
+                    <p><strong>Status:</strong> <span class="status-badge ${statusClass}">${ticket.status || 'open'}</span></p>
+                </div>
+
+                <div class="ticket-details" style="border-left-color: #666;">
+                    <p style="margin: 0; color: #666;"><strong style="color: #333;">Customer Message:</strong></p>
+                    <p style="margin: 12px 0 0; line-height: 1.6; white-space: pre-wrap;">${ticket.message || 'No message provided'}</p>
+                </div>
+
+                ${ticket.response ? `
+                <div class="ticket-details" style="background: #e8f5e9; border-left-color: var(--green-color);">
+                    <p style="margin: 0; color: #333;"><strong style="color: var(--green-color);">Support Response:</strong></p>
+                    <p style="margin: 12px 0 0; line-height: 1.6; white-space: pre-wrap;">${ticket.response}</p>
+                </div>
+                ` : '<p style="color: #999; font-style: italic;">No response sent yet.</p>'}
+
+                <div class="response-form">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--green-color);">
+                        ${ticket.response ? 'Update Response' : 'Send Response'}
+                    </label>
+                    <textarea id="responseText" placeholder="Enter your response here...">${ticket.response || ''}</textarea>
+                    
+                    <div style="margin-top: 16px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="submitTicketResponse(${ticket.id})" style="flex: 1;">
+                            <i class='bx bx-send'></i> Send Response
+                        </button>
+                        <button class="btn ${ticket.status === 'resolved' ? 'btn-danger' : 'btn-success'}" onclick="toggleTicketResolved(${ticket.id})" style="flex: 1;">
+                            <i class='bx bx-check'></i> ${ticket.status === 'resolved' ? 'Reopen' : 'Mark Resolved'}
+                        </button>
+                        <button class="btn btn-danger" onclick="closeTicketModal()" style="flex: 1;">
+                            <i class='bx bx-x'></i> Close
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('ticketModalBody').innerHTML = modalBody;
+            document.getElementById('ticketModal').classList.add('show');
+        }
+
+        function submitTicketResponse(ticketId) {
+            const responseText = document.getElementById('responseText').value.trim();
+            
+            if (!responseText) {
+                alert('Please enter a response');
+                return;
+            }
+
+            const tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            const ticket = tickets.find(t => t.id === ticketId);
+            
+            if (!ticket) {
+                alert('Ticket not found');
+                return;
+            }
+
+            ticket.response = responseText;
+            ticket.status = 'open';
+            
+            try {
+                localStorage.setItem('supportTickets', JSON.stringify(tickets));
+                alert('Response sent successfully!');
+                closeTicketModal();
+                renderAdminData();
+            } catch (e) {
+                alert('Error saving response: ' + e.message);
+            }
+        }
+
+        function toggleTicketResolved(ticketId) {
+            const tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            const ticket = tickets.find(t => t.id === ticketId);
+            
+            if (!ticket) {
+                alert('Ticket not found');
+                return;
+            }
+
+            ticket.status = ticket.status === 'resolved' ? 'open' : 'resolved';
+            
+            try {
+                localStorage.setItem('supportTickets', JSON.stringify(tickets));
+                alert('Ticket status updated!');
+                openTicketModal(ticketId);
+                renderAdminData();
+            } catch (e) {
+                alert('Error updating ticket: ' + e.message);
+            }
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticketModal').classList.remove('show');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAdminData();
+            const search = document.getElementById('userSearch');
+            if (search) search.addEventListener('keyup', searchUsers);
+
+            // Close modal when clicking outside of it
+            const modal = document.getElementById('ticketModal');
+            if (modal) {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        closeTicketModal();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

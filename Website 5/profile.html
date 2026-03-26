@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - KFR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile-style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+<body id="top">
+<header>
+<a href="index.html" class="logo"><i class='bx bx-store-alt'></i> KFR</a>
+    <div class="bx bx-menu" id="menu-icon"></div>
+    <ul class="navbar">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="cart.html" class="cart-link">Cart <span class="cart-count" aria-label="Items in cart">0</span></a></li>
+    </ul>
+</header>
+
+<section class="profile-section">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 id="profileUsername">Loading...</h1>
+            <button class="btn edit-btn" onclick="toggleEditMode()">Edit Profile <i class='bx bx-edit'></i></button>
+        </div>
+
+        <!-- Edit Profile Form (hidden by default) -->
+        <div id="editForm" class="edit-profile-form" style="display: none;">
+            <h3>Edit Profile</h3>
+            <div class="input-group">
+                <label for="editUsername">Username</label>
+                <input type="text" id="editUsername" placeholder="New username">
+            </div>
+            <div class="input-group">
+                <label for="editEmail">Email</label>
+                <input type="email" id="editEmail" placeholder="New email">
+            </div>
+            <div class="input-group password-group">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" required placeholder="Enter current password">
+                <i class='bx bx-show password-toggle' onclick="togglePassword('currentPassword', this)"></i>
+            </div>
+            <div class="input-group password-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" minlength="6" placeholder="New password (optional)">
+                <i class='bx bx-show password-toggle' onclick="togglePassword('newPassword', this)"></i>
+            </div>
+            <div class="input-group password-group">
+                <label for="confirmNewPassword">Confirm New Password</label>
+                <input type="password" id="confirmNewPassword" placeholder="Confirm new password (optional)">
+                <i class='bx bx-show password-toggle' onclick="togglePassword('confirmNewPassword', this)"></i>
+            </div>
+            <div class="profile-actions">
+                <button onclick="editProfile()" class="btn">Save Changes</button>
+                <button onclick="toggleEditMode()" class="btn logout-btn">Cancel</button>
+            </div>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-item">
+                <i class='bx bx-user'></i>
+                <p><strong>Username:</strong> <span id="displayUsername">Loading...</span></p>
+            </div>
+            <div class="info-item">
+                <i class='bx bx-envelope'></i>
+                <p><strong>Email:</strong> <span id="displayEmail">Loading...</span></p>
+            </div>
+            <button onclick="logout()" class="btn logout-btn">Logout<i class='bx bx-log-out'></i></button>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="orders-section">
+            <h3>Your Orders</h3>
+            <div id="ordersList" class="orders-list">
+                <p>Loading orders...</p>
+            </div>
+        </div>
+
+        <!-- Favorites Section -->
+        <div class="favorites-section">
+            <div class="heading">
+                <h3>Your <span>Favorites</span></h3>
+            </div>
+            <div class="favorites-container">
+                <p>No favorite products yet. Tap the heart icon on products to save favorites.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="main.js"></script>
+<script>
+function toggleEditMode() {
+    const form = document.getElementById('editForm');
+    const isHidden = form.style.display === 'none';
+    form.style.display = isHidden ? 'block' : 'none';
+    
+    if (isHidden) {
+        // Populate form with current values
+        document.getElementById('editUsername').value = getCurrentUser()?.username || '';
+        document.getElementById('editEmail').value = getCurrentUser()?.email || '';
+    }
+}
+
+// Load profile data and orders
+document.addEventListener('DOMContentLoaded', () => {
+    updateProfileHeader(); // Navbar
+    
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    document.getElementById('profileUsername').textContent = user.username;
+    document.getElementById('displayUsername').textContent = user.username;
+    document.getElementById('displayEmail').textContent = user.email;
+
+    if (user.role === 'admin') {
+        const adminButton = document.createElement('button');
+        adminButton.className = 'btn';
+        adminButton.textContent = 'Go to Admin Dashboard';
+        adminButton.onclick = () => window.location.href = 'admin.html';
+        document.querySelector('.profile-header').appendChild(adminButton);
+    }
+    
+    // Load orders
+    loadUserOrders();
+});
+
+function loadUserOrders() {
+    const orders = userOrders();
+    const container = document.getElementById('ordersList');
+    
+    if (orders.length === 0) {
+        container.innerHTML = '<p>No orders yet. <a href="cart.html">Start shopping!</a></p>';
+        return;
+    }
+    
+    container.innerHTML = orders.map(order => `
+        <div class="order-item">
+            <div class="order-header">
+                <span class="order-id">#${order.id}</span>
+                <span class="order-date">${order.date}</span>
+                <span class="order-total">₱${order.total.toFixed(2)}</span>
+            </div>
+            <div class="order-items">
+                ${order.items.map(item => `
+                    <div class="order-item-detail">
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>₱${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="order-payment">Payment: ${order.payment === 'card' ? 'Credit Card' : 'Cash on Delivery'}</div>
+        </div>
+    `).join('');
+}
+</script>
+</body>
+</html>

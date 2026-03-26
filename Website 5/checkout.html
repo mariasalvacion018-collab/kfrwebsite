@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - KFR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+    <!--Navbar-->
+    <header>
+        <a href="index.html" class="logo"><i class='bx bx-cart cart-icon'></i> KFR</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+        <ul class="navbar">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a id="login-nav-link" href="login.html">Login/Register</a></li>
+        </ul>
+        <div class="profile" id="profile-nav"></div>
+    </header>
+
+    <section class="checkout-section">
+        <div class="heading">
+            <h1>Checkout <span class="cart-count" id="checkout-page-count">0</span></h1>
+            <a href="cart.html" class="btn">← Back to Cart</a>
+        </div>
+
+        <div class="checkout-container">
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div id="checkout-cart-items"></div>
+                <div class="total-line">
+                    <span>Total: ₱<span id="checkout-total">0.00</span></span>
+                </div>
+            </div>
+
+            <!-- Checkout Form -->
+            <form id="checkoutForm" class="checkout-form">
+                <h3>Billing Information</h3>
+                <div class="input-group">
+                    <input type="text" id="billingName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="billingEmail" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="tel" id="billingPhone" placeholder="Phone" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="billingAddress" placeholder="Address" required>
+                </div>
+
+                <h3>Shipping Information</h3>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="sameAsBilling" checked>
+                        Same as billing
+                    </label>
+                </div>
+                <div id="shippingFields">
+                    <div class="input-group">
+                        <input type="text" id="shippingName" placeholder="Full Name">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="shippingAddress" placeholder="Address">
+                    </div>
+                </div>
+
+                <h3>Payment Method</h3>
+                <div class="payment-methods">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="card" required>
+                        <i class='bx bx-credit-card'></i> Credit/Debit Card
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="cod">
+                        <i class='bx bx-package'></i> Cash on Delivery
+                    </label>
+                </div>
+                <div id="cardFields" style="display:none;">
+                    <div class="input-group">
+                        <input type="text" id="cardNumber" placeholder="Card Number" maxlength="16">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cardCVV" placeholder="CVV" maxlength="3">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn checkout-submit">Place Order</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavbar();
+            updateCartCount();
+            loadCheckout();
+            
+            // Same as billing toggle
+            document.getElementById('sameAsBilling').addEventListener('change', function() {
+                document.getElementById('shippingFields').style.display = this.checked ? 'none' : 'block';
+            });
+            
+            // Payment method toggle
+            document.querySelectorAll('input[name="payment"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.getElementById('cardFields').style.display = this.value === 'card' ? 'block' : 'none';
+                });
+            });
+        });
+
+        function loadCheckout() {
+            const cart = getCart();
+            const total = calculateTotal(cart);
+            const container = document.getElementById('checkout-cart-items');
+            const totalEl = document.getElementById('checkout-total');
+            
+            totalEl.textContent = total.toFixed(2);
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p>No items in cart</p>';
+                return;
+            }
+            
+            container.innerHTML = cart.map(item => `
+                <div class="checkout-item">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p>₱${item.price} x ${item.quantity}</p>
+                    </div>
+                    <span>₱${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Fake processing
+            document.querySelector('.checkout-submit').innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Processing...';
+            document.querySelector('.checkout-submit').disabled = true;
+            
+            setTimeout(() => {
+                // Save order history
+                const order = {
+                    id: Date.now(),
+                    date: new Date().toLocaleString(),
+                    items: getCart(),
+                    total: calculateTotal(getCart()),
+                    billing: {
+                        name: document.getElementById('billingName').value,
+                        email: document.getElementById('billingEmail').value,
+                        phone: document.getElementById('billingPhone').value,
+                        address: document.getElementById('billingAddress').value
+                    },
+                    payment: document.querySelector('input[name="payment"]:checked').value
+                };
+                
+                let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.unshift(order);
+                localStorage.setItem('orders', JSON.stringify(orders.slice(0, 50))); // Keep last 50
+                
+                clearCart();
+                updateCartCount();
+                alert('Order placed successfully! Order ID: #' + order.id + '\nCheck profile for order history.');
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

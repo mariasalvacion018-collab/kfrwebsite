@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - KFR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <style>
+        body { background: #f4f7fb; }
+        header {
+            padding: 10px 20px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        header .logo { font-size: 1.25rem; font-weight: 700; color: #f16231; text-decoration: none; }
+        header .navbar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        header .navbar a {
+            display: inline-block;
+            padding: 8px 11px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: 0.2s all;
+        }
+        header .navbar a:hover { background: #f6eee7; color: #f16231; }
+        header .profile { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; color: #555; }
+
+        .help-container { padding: 30px 20px; max-width: 1000px; margin: 0 auto; }
+        .help-header { text-align: center; margin-bottom: 40px; }
+        .help-header h1 { font-size: 2rem; margin: 0 0 10px; }
+        .help-header p { color: #666; font-size: 1.1rem; }
+
+        .help-section { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+        .help-section h2 { margin-top: 0; border-bottom: 2px solid #f16231; padding-bottom: 10px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-grid .input-group { margin-bottom: 0; }
+        .form-grid .input-group textarea { grid-column: 1 / -1; }
+
+        .faq-item { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #eee; }
+        .faq-item strong { color: #f16231; display: block; margin-bottom: 6px; cursor: pointer; }
+        .faq-item p { margin: 6px 0 0; color: #666; font-size: 0.95rem; }
+
+
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab { padding: 10px 16px; background: #f0f0f0; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .tab.active { background: #f16231; color: #fff; }
+
+        .ticket-card { background: #f9f9f9; padding: 14px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #f16231; }
+        .ticket-card .ticket-id { font-weight: 700; color: #f16231; }
+        .ticket-card .ticket-status { font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; background: #28a745; color: #fff; display: inline-block; margin-left: 10px; }
+
+        .btn { border: none; cursor: pointer; background: #f16231; color: #fff; border-radius: 8px; padding: 10px 16px; font-weight: 600; transition: 0.2s; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(241,98,49,.2); }
+
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: #fff; padding: 30px; border-radius: 12px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .modal-close { float: right; font-size: 28px; font-weight: bold; cursor: pointer; color: #aaa; }
+        .modal-close:hover { color: #f16231; }
+        .ticket-card { cursor: pointer; transition: 0.2s; }
+        .ticket-card:hover { box-shadow: 0 4px 12px rgba(241,98,49,.15); transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .help-header h1 { font-size: 1.5rem; }
+            .help-section { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="help.html" class="logo"><i class='bx bx-support'></i> KFR Support</a>
+    <div class="bx bx-menu" id="menu-icon"></div>
+    <ul class="navbar">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="help.html" class="home-active">Support</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#submit-ticket">Submit Ticket</a></li>
+        <li><a href="#my-tickets">My Tickets</a></li>
+        <li><a id="login-nav-link" href="login.html">Login/Register</a></li>
+    </ul>
+    <div class="profile"></div>
+</header>
+
+<div class="help-container">
+    <div class="help-header">
+        <h1>Help & Support Center</h1>
+        <p>Get answers, submit tickets, and chat with our support team</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('faq')">FAQ</button>
+        <button class="tab" onclick="showTab('submit-ticket')">Submit Ticket</button>
+        <button class="tab" onclick="showTab('my-tickets')">My Tickets</button>
+    </div>
+
+    <!-- FAQ Section -->
+    <div id="faq" class="help-section tab-content">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> How do I create an account?</strong>
+            <p style="display:none;">Click on "Login/Register" in the top navigation, then select "Register here". Fill in your username, email, and password (minimum 6 characters) to create your account.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> How do I reset my password?</strong>
+            <p style="display:none;">Go to the login page and look for a "Forgot password?" link. Enter your email and follow the instructions to reset your password.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> How can I track my order?</strong>
+            <p style="display:none;">After logging in, go to your profile page. Under "Your Orders" section, you'll see all your orders with their status and tracking information.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> What payment methods do you accept?</strong>
+            <p style="display:none;">We accept credit and debit cards as well as cash on delivery for qualifying orders. Payment is processed securely at checkout.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> How long does delivery take?</strong>
+            <p style="display:none;">Standard delivery typically takes 3-5 business days. Express delivery options may be available depending on your location and order size.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> Can I cancel or modify an order?</strong>
+            <p style="display:none;">Orders can be cancelled within 1 hour of placement. For modifications, please cancel and reorder, or contact our support team immediately.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> What's your return policy?</strong>
+            <p style="display:none;">We accept returns within 30 days of delivery for unused items in original packaging. Contact support to start a return.</p>
+        </div>
+
+        <div class="faq-item">
+            <strong onclick="toggleFAQ(this)"><i class='bx bx-chevron-right'></i> How do I update my profile?</strong>
+            <p style="display:none;">Log in and go to your profile page. Click "Edit Profile" to change your username, email, or password. You'll need your current password to confirm changes.</p>
+        </div>
+    </div>
+
+    <!-- Submit Ticket Section -->
+    <div id="submit-ticket" class="help-section tab-content" style="display:none;">
+        <h2>Submit a Support Ticket</h2>
+        <form id="ticketForm">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="ticketName" placeholder="Your name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="ticketEmail" placeholder="Your email" required>
+                </div>
+                <div class="input-group">
+                    <label>Subject</label>
+                    <input type="text" id="ticketSubject" placeholder="What's the issue?" required>
+                </div>
+                <div class="input-group">
+                    <label>Category</label>
+                    <select id="ticketCategory" required>
+                        <option value="">Select a category</option>
+                        <option value="billing">Billing/Payment</option>
+                        <option value="technical">Technical Issue</option>
+                        <option value="account">Account Issues</option>
+                        <option value="order">Order Problem</option>
+                        <option value="delivery">Delivery</option>
+                        <option value="product">Product Quality</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group" style="grid-column:1 / -1;">
+                    <label>Describe Your Issue</label>
+                    <textarea id="ticketMessage" placeholder="Please provide details about your issue..." rows="6" required></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn" style="margin-top:16px; width:100%;">Submit Ticket</button>
+        </form>
+    </div>
+
+    <!-- My Tickets Section -->
+    <div id="my-tickets" class="help-section tab-content" style="display:none;">
+        <h2>My Support Tickets</h2>
+        <div id="myTicketsContainer" style="max-height:500px; overflow-y:auto;">
+            <p style="color:#999; text-align:center;">Login to view your support tickets</p>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Ticket Modal -->
+<div id="ticketModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeTicketModal()">&times;</span>
+        <div id="ticketModalBody"></div>
+    </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+    function toggleFAQ(element) {
+        const icon = element.querySelector('i');
+        const answer = element.nextElementSibling;
+        if (answer.style.display === 'none') {
+            answer.style.display = 'block';
+            icon.classList.add('bx-chevron-down');
+            icon.classList.remove('bx-chevron-right');
+        } else {
+            answer.style.display = 'none';
+            icon.classList.remove('bx-chevron-down');
+            icon.classList.add('bx-chevron-right');
+        }
+    }
+
+    function showTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.getElementById(tabName).style.display = 'block';
+
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        
+        // Find and activate the corresponding tab button
+        const buttons = document.querySelectorAll('.tab');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('onclick').includes(`'${tabName}'`)) {
+                btn.classList.add('active');
+            }
+        });
+
+        if (tabName === 'my-tickets') loadUserTickets();
+    }
+
+    function submitTicket(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('ticketName').value.trim();
+        const email = document.getElementById('ticketEmail').value.trim();
+        const subject = document.getElementById('ticketSubject').value.trim();
+        const category = document.getElementById('ticketCategory').value;
+        const message = document.getElementById('ticketMessage').value.trim();
+
+        // Validation
+        if (!name || !email || !subject || !category || !message) {
+            alert('Please fill all required fields');
+            return;
+        }
+
+        if (!email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+
+        // Get all existing tickets
+        let tickets = [];
+        try {
+            tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            if (!Array.isArray(tickets)) tickets = [];
+        } catch (e) {
+            tickets = [];
+        }
+
+        // Create new ticket
+        const ticket = {
+            id: Math.floor(Math.random() * 1000000),
+            name,
+            email,
+            subject,
+            category,
+            message,
+            date: new Date().toLocaleString(),
+            status: 'open',
+            response: ''
+        };
+
+        // Save ticket
+        tickets.push(ticket);
+        try {
+            localStorage.setItem('supportTickets', JSON.stringify(tickets));
+        } catch (e) {
+            alert('Error saving ticket. Please try again.');
+            return;
+        }
+
+        // Reset form and show success
+        document.getElementById('ticketForm').reset();
+        
+        // Show success toast
+        if (typeof showToast === 'function') {
+            showToast('Ticket submitted successfully! We\'ll be in touch soon.');
+        } else {
+            alert('Ticket submitted successfully! We\'ll be in touch soon.');
+        }
+        
+        // Switch to My Tickets tab to show the new ticket
+        setTimeout(() => {
+            showTab('my-tickets');
+        }, 500);
+    }
+
+    function loadUserTickets() {
+        const user = getCurrentUser();
+        const container = document.getElementById('myTicketsContainer');
+
+        if (!user) {
+            container.innerHTML = `
+                <p style="color:#999; text-align:center; padding:20px;">
+                    <a href="login.html">Login</a> to view your support tickets, or scroll down to search by email
+                </p>
+                <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">Search Tickets by Email:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="email" id="searchTicketEmail" placeholder="Enter your email" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <button onclick="searchTicketsByEmail()" class="btn" style="padding: 8px 16px;">Search</button>
+                    </div>
+                    <div id="searchResults" style="margin-top: 15px;"></div>
+                </div>
+            `;
+            return;
+        }
+
+        let tickets = [];
+        try {
+            tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            if (!Array.isArray(tickets)) tickets = [];
+        } catch (e) {
+            tickets = [];
+        }
+
+        const userTickets = tickets.filter(t => t.email === user.email);
+        if (userTickets.length === 0) {
+            container.innerHTML = '<p style="color:#999; text-align:center; padding:20px;">You haven\'t submitted any support tickets yet.</p>';
+            return;
+        }
+
+        container.innerHTML = userTickets.map(ticket => `
+            <div class="ticket-card" onclick="openTicketModal(${ticket.id})">
+                <div>
+                    <span class="ticket-id">Ticket #${ticket.id}</span>
+                    <span class="ticket-status">${ticket.status}</span>
+                </div>
+                <strong style="display:block; margin-top:6px;">${ticket.subject}</strong>
+                <p style="margin:6px 0; color:#666; font-size:0.9rem;">${ticket.category} • ${ticket.date}</p>
+                <p style="margin:8px 0 0; color:#555;">${ticket.message}</p>
+                ${ticket.response ? `<p style="margin-top:10px; padding-top:10px; border-top:1px solid #ddd; color:#f16231;"><strong>Response:</strong> ${ticket.response}</p>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function searchTicketsByEmail() {
+        const email = document.getElementById('searchTicketEmail').value.trim();
+        const resultsDiv = document.getElementById('searchResults');
+
+        if (!email) {
+            alert('Please enter an email address');
+            return;
+        }
+
+        if (!email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+
+        let tickets = [];
+        try {
+            tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            if (!Array.isArray(tickets)) tickets = [];
+        } catch (e) {
+            tickets = [];
+        }
+
+        const userTickets = tickets.filter(t => t.email === email);
+        if (userTickets.length === 0) {
+            resultsDiv.innerHTML = '<p style="color:#999; text-align:center; padding:10px;">No tickets found for this email address.</p>';
+            return;
+        }
+
+        resultsDiv.innerHTML = userTickets.map(ticket => `
+            <div class="ticket-card" onclick="openTicketModal(${ticket.id})">
+                <div>
+                    <span class="ticket-id">Ticket #${ticket.id}</span>
+                    <span class="ticket-status">${ticket.status}</span>
+                </div>
+                <strong style="display:block; margin-top:6px;">${ticket.subject}</strong>
+                <p style="margin:6px 0; color:#666; font-size:0.9rem;">${ticket.category} • ${ticket.date}</p>
+                <p style="margin:8px 0 0; color:#555;">${ticket.message}</p>
+                ${ticket.response ? `<p style="margin-top:10px; padding-top:10px; border-top:1px solid #ddd; color:#f16231;"><strong>Response:</strong> ${ticket.response}</p>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function openTicketModal(ticketId) {
+        let tickets = [];
+        try {
+            tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+        } catch (e) {
+            tickets = [];
+        }
+
+        const ticket = tickets.find(t => t.id === ticketId);
+        if (!ticket) return;
+
+        const formattedResponse = ticket.response ? `<div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 3px solid #f16231; border-radius: 4px;">
+            <strong style="color: #f16231;">Response from Support:</strong>
+            <p style="margin: 8px 0 0; color: #555;">${ticket.response}</p>
+        </div>` : '<p style="color: #999; margin-top: 10px;">No response yet. We\'ll get back to you soon!</p>';
+
+        const modalBody = `
+            <h2 style="margin-top: 0; color: #333;">${ticket.subject}</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <div>
+                    <p style="margin: 0; color: #999; font-size: 0.9rem;">Ticket ID</p>
+                    <p style="margin: 5px 0 0; font-weight: 600; color: #f16231;">#${ticket.id}</p>
+                </div>
+                <div>
+                    <p style="margin: 0; color: #999; font-size: 0.9rem;">Status</p>
+                    <p style="margin: 5px 0 0; font-weight: 600; color: #28a745;">${ticket.status}</p>
+                </div>
+                <div>
+                    <p style="margin: 0; color: #999; font-size: 0.9rem;">Category</p>
+                    <p style="margin: 5px 0 0; font-weight: 600;">${ticket.category}</p>
+                </div>
+                <div>
+                    <p style="margin: 0; color: #999; font-size: 0.9rem;">Date Submitted</p>
+                    <p style="margin: 5px 0 0; font-weight: 600;">${ticket.date}</p>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
+                <p style="margin: 0 0 5px; color: #999; font-size: 0.9rem;">Your Message</p>
+                <p style="margin: 8px 0; color: #555; line-height: 1.6;">${ticket.message}</p>
+            </div>
+            ${formattedResponse}
+            <button onclick="closeTicketModal()" class="btn" style="margin-top: 20px; width: 100%;">Close</button>
+        `;
+
+        document.getElementById('ticketModalBody').innerHTML = modalBody;
+        document.getElementById('ticketModal').classList.add('show');
+    }
+
+    function closeTicketModal() {
+        document.getElementById('ticketModal').classList.remove('show');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateNavbar();
+
+        // Attach form submission listener
+        const form = document.getElementById('ticketForm');
+        if (form) {
+            form.addEventListener('submit', submitTicket);
+        }
+
+        // Pre-fill email and name if logged in
+        try {
+            const user = getCurrentUser();
+            if (user) {
+                const emailInput = document.getElementById('ticketEmail');
+                const nameInput = document.getElementById('ticketName');
+                if (emailInput) emailInput.value = user.email || '';
+                if (nameInput) nameInput.value = user.username || '';
+            }
+        } catch (e) {
+            console.log('Could not pre-fill user info');
+        }
+
+        // Close modal when clicking outside of it
+        const modal = document.getElementById('ticketModal');
+        if (modal) {
+            modal.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeTicketModal();
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

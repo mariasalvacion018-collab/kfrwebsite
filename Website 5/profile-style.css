@@ -1,0 +1,236 @@
+/* Profile Page Styles */
+.profile-section {
+    padding: 6rem 0 2.5rem;
+    min-height: calc(100vh - 80px);
+    background: url(img/background.png);
+}
+
+.profile-container {
+    max-width: 968px;
+    margin: 1.5rem auto;
+    padding: 2rem;
+    background: var(--bg-color);
+    border-radius: 1rem;
+    box-shadow: 0 1rem 3rem rgba(14,55,54,0.1);
+    text-align: center;
+}
+
+.profile-header {
+    margin-bottom: 2rem;
+}
+
+.profile-header h1 {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+    color: var(--text-color);
+}
+
+.edit-btn {
+    background: var(--green-color);
+    margin-top: 1rem;
+}
+
+.edit-btn:hover {
+    background: var(--light-green-color);
+    color: var(--text-color);
+}
+
+.profile-info {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: #f8f9fa;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-align: left;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.info-item strong {
+    min-width: 100px;
+    color: var(--text-color);
+}
+
+.info-item i {
+    font-size: 2rem;
+    color: var(--green-color);
+    width: 40px;
+    text-align: center;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.logout-btn {
+    background: var(--orange-color);
+}
+
+.logout-btn:hover {
+    background: var(--light-orange-color);
+}
+
+/* Edit Profile Form */
+.edit-profile-form {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin: 2rem 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.edit-profile-form h3 {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.edit-profile-form .input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.edit-profile-form .input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.edit-profile-form .input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.edit-profile-form .input-group input:focus {
+    outline: none;
+    border-color: var(--green-color);
+    box-shadow: 0 0 0 3px rgba(59,200,21,0.1);
+}
+
+/* Orders Section */
+.orders-section {
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.orders-section h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.orders-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.order-item {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.order-id {
+    font-weight: 600;
+    color: var(--green-color);
+}
+
+.order-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.order-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--light-orange-color);
+}
+
+.order-items {
+    margin: 1rem 0;
+}
+
+.order-item-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.order-item-detail:last-child {
+    border-bottom: none;
+}
+
+.order-payment {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-weight: 500;
+    color: var(--green-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .profile-header h1 {
+        font-size: 2rem;
+    }
+    
+    .profile-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .edit-profile-form {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .orders-list {
+        max-height: 400px;
+    }
+}
+

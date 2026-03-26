@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanto Familia Restaurant - KFR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+<body id="top">
+    <!-- Navbar -->
+    <header class="fixed-header">
+        <a href="index-fixed.html" class="logo">
+            <i class="bx bx-cart cart-icon"></i>
+            KFR
+        </a>
+        <!-- Menu icon -->
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <!-- Nav list -->
+        <ul class="navbar">
+            <li><a href="#home" class="home-active">Home</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="about.html#about">About</a></li>
+            <li><a href="cart.html" class="cart-link">Cart <span class="cart-count">0</span></a></li>
+            <li><a id="login-nav-link" href="login.html">Login/Register</a></li>
+        </ul>
+
+        <!-- Profile/Login link (matches main.js expectations) -->
+        <div class="profile" aria-label="Profile" role="button">
+            <i class='bx bx-user' aria-hidden="true"></i>
+        </div>
+    </header>
+
+    <!-- Home -->
+     <section class="home" id="home">
+         <div class="home-text">
+            <h1>KANTO FAMILIA RESTAURANT</h1>
+            <p>Bold flavors, fresh ingredients, family style.</p>
+            <p>Reserve your table or order chef-curated dishes for delivery.</p>
+            <div class="hero-buttons">
+                <a href="about.html#book-table" class="btn">Reserve Now</a>
+                <a href="cart.html" class="btn">Order Online</a>
+                <a href="#products" class="btn shop-now">View Menu<i class=" bx bx-right-arrow-alt" ></i></a>
+            </div>
+         </div>
+          <div class="home-image">
+            <img src="img/grilled chicken.png" alt="Signature Restaurant Dish">
+           </div>
+       </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+        <div class="heading">
+            <h1>Browse Our Hottest<br><span>Categories</span></h1>
+            <a href="#" class="btn">See All <i class="bx bx-right-arrow-alt"></i></a>
+        </div>
+        <div class="categories-container">
+            <div class="box box1" data-category="Appetizers">
+                <img src="img/appetizer.png" alt="Appetizers">
+                <h2>Appetizers</h2>
+                <span>6 Items <i class="bx bx-right-arrow-alt"></i></span>
+            </div>
+            <div class="box box2" data-category="Main Course">
+                <img src="img/main course.png" alt="Main Course">
+                <h2>Main Course</h2>
+                <span>6 Items <i class="bx bx-right-arrow-alt"></i></span>
+            </div>
+            <div class="box box3" data-category="Desserts">
+                <img src="img/lavacake.png" alt="Desserts">
+                <h2>Desserts</h2>
+                <span>4 Items <i class="bx bx-right-arrow-alt"></i></span>
+            </div>
+            <div class="box box4" data-category="Beverages">
+                <img src="img/orange juice.png" alt="Beverages">
+                <h2>Beverages</h2>
+                <span>2 Items <i class="bx bx-right-arrow-alt"></i></span>
+            </div>
+            <div class="box box5" data-category="Sides">
+                <img src="img/seasoned_fries.png" alt="Sides">
+                <h2>Sides</h2>
+                <span>4 Items <i class="bx bx-right-arrow-alt"></i></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="heading">
+            <h1>Our Popular<br><span>Products</span></h1>
+        </div>
+        <div class="products-container">
+           
+            <div class="box" data-product-id="13" data-category="Drinks">
+                <img src="img/orange juice.png" alt="Orange Juice">
+                <span>Fresh Item</span>
+                <h2>Fresh Orange <br>Juice 500ml</h2>
+                <h3 class="price">₱120</h3>
+                <i class="bx bx-cart-alt add-to-cart" data-product-id="13"></i>
+                <i class="bx bx-heart" data-product-id="13"></i>
+                <span class="discount">-15%</span>
+            </div>
+            <div class="box" data-product-id="14" data-category="Drinks">
+                <img src="img/cola.png" alt="Cola">
+                <span>Fresh Item</span>
+                <h2>Classic <br>Cola 330ml</h2>
+                <h3 class="price">₱80</h3>
+                <i class="bx bx-cart-alt add-to-cart" data-product-id="14"></i>
+                <i class="bx bx-heart" data-product-id="14"></i>
+                <span class="discount">-15%</span>
+            </div>
+            <div class="box" data-product-id="15" data-category="Fresh Nuts">
+                <img src="img/mixie veggie.png" alt="Almonds">
+                <span>Fresh Item</span>
+                <h2>Premium <br>Almonds 200g</h2>
+                <h3 class="price">₱200</h3>
+                <i class="bx bx-cart-alt add-to-cart" data-product-id="15"></i>
+                <i class="bx bx-heart" data-product-id="15"></i>
+                <span class="discount">-10%</span>
+            </div>
+            <div class="box" data-product-id="16" data-category="Fresh Nuts">
+                <img src="img/peanuts.png" alt="Peanuts">
+                <span>Fresh Item</span>
+                <h2>Roasted <br>Peanuts 250g</h2>
+                <h3 class="price">₱150</h3>
+                <i class="bx bx-cart-alt add-to-cart" data-product-id="16"></i>
+                <i class="bx bx-heart" data-product-id="16"></i>
+                <span class="discount">-10%</span>
+            </div>
+            <div class="box" data-product-id="17" data-category="Spices">
+                <img src="img/pepper.png" alt="Pepper">
+                <span>Fresh Item</span>
+                <h2>Ground Black <br>Pepper 100g</h2>
+                <h3 class="price">₱50</h3>
+                <i class="bx bx-cart-alt add-to-cart" data-product-id="17"></i>
+                <i class="bx bx-heart" data-product-id="17"></i>
+                <span class="discount">-5%</span>
+            </div>
+            <div class="box" data-product-id="18" data-category="Spices">
+                <img src="img/cumin.png" alt="Cumin">
+                <span>Fresh Item</span>
+                <h2>Cumin <br>Powder 100g</h2>
+                <h3 class="price">₱60</h3>
+                <i class="bx bx-cart-alt add-to-cart" data-product-id="18"></i>
+                <i class="bx bx-heart" data-product-id="18"></i>
+                <span class="discount">-5%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer">
+        <div class="footer-box">
+            <h2>Kanto Familia Restaurant</h2>
+            <p>123 Culinary Avenue<br>
+            Hagonoy Village, Taguig City<br>
+            <a href="tel:+639635165395">(096) 351-65395</a><br>
+            <a href="mailto:contact@kantofamilia.ph">contact@kantofamilia.ph</a></p>
+            <p><strong>Open Daily:</strong><br>10:00AM - 10:00PM</p>
+            <div class="social">
+                <a href="https://www.facebook.com"><i class="bx bxl-facebook"></i></a>
+                <a href="https://www.twitter.com"><i class="bx bxl-twitter"></i></a>
+                <a href="https://www.instagram.com/"><i class="bx bxl-instagram"></i></a>
+            </div>
+        </div>
+        <div class="footer-box">
+            <h2>Menu Sections</h2>
+            <a href="#products" onclick="filterFooterCategory('Appetizers')">Appetizers</a>
+            <a href="#products" onclick="filterFooterCategory('Main Course')">Main Course</a>
+            <a href="#products" onclick="filterFooterCategory('Desserts')">Desserts</a>
+            <a href="#products" onclick="filterFooterCategory('Beverages')">Beverages</a>
+            <a href="#products" onclick="filterFooterCategory('Sides')">Sides</a>
+        </div>
+        <div class="footer-box">
+            <h2>Newsletter</h2>
+            <p>Get 10% off your first order and chef specials in your inbox.</p>
+            <form action="">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" style="background: none; border: none; cursor: pointer;">
+                    <i class="bx bx-send" style="font-size: 20px; color: var(--light-orange-color);"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Kanto Familia Restaurant</p>
+        <a href="#top" class="back-to-top">Back to Top</a>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

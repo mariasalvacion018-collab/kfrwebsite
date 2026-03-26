@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Kanto Familia Restaurant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
+    <div id="top"></div>
+    
+    <!-- Navbar -->
+    <header>
+        <a href="index.html" class="logo">
+            <i class="bx bx-cart cart-icon"></i>
+            <span class="cart-count" id="navbar-cart-count">0</span> KFR
+        </a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+        <ul class="navbar">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#categories">Categories</a></li>
+            <li><a href="index.html#products">Products</a></li>
+            <li><a href="about.html" class="home-active">About</a></li>
+            <li><a id="login-nav-link" href="login.html">Login/Register</a></li>
+        </ul>
+        <div class="profile" id="profile-nav">
+            <span>Login/Register</span>
+            <i class='bx bx-user'></i>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-text">
+            <span>About Us</span>
+            <h2 id="about-welcome">Welcome to Kanto Familia Restaurant</h2>
+            <p id="about-desc">At Kanto Familia Restaurant, we combine restaurant passion with heartfelt hospitality. Our story began at a family table, and today we serve modern comfort food crafted from garden-fresh ingredients, house-made sauces, and thoughtfully sourced proteins.</p>
+            <p>Every meal is designed to delight—from savory appetizers to indulgent desserts. We empower guests with great taste, excellent value, and the care of an inviting neighborhood eatery.</p>
+        </div> 
+    </section>
+
+    <!-- Book Table -->
+    <section class="book-table" id="book-table">
+        <div class="heading"><h1>Book a Table</h1></div>
+        <form id="tableBookForm" class="book-table-form">
+            <div class="form-grid">
+                <input type="text" id="guestName" placeholder="Name" required>
+                <input type="email" id="guestEmail" placeholder="Email" required>
+                <input type="tel" id="guestPhone" placeholder="Phone" required>
+                <input type="date" id="guestDate" required>
+                <input type="time" id="guestTime" required>
+                <input type="number" id="guestCount" placeholder="Guests" min="1" max="20" required>
+            </div>
+            <textarea id="guestNotes" placeholder="Special requests"></textarea>
+            <button type="submit" class="btn">Confirm Reservation</button>
+        </form>
+    </section>
+
+    <!-- Values -->
+    <section class="about-values">
+        <div class="value-card">
+            <i class='bx bx-leaf'></i>
+            <h3>Fresh Ingredients</h3>
+            <p>All products are sourced daily from local farms and tested for quality.</p>
+        </div>
+        <div class="value-card">
+            <i class='bx bx-heart-circle'></i>
+            <h3>Family First</h3>
+            <p>We treat customers like family and deliver care in every order.</p>
+        </div>
+        <div class="value-card">
+            <i class='bx bx-check-shield'></i>
+            <h3>Trusted Quality</h3>
+            <p>Our promise is to keep consistency with taste, health, and service.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="heading"><h1>What Our Guests Say</h1></div>
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p>"Incredible food and warm service. The grilled salmon is a must-try!"</p>
+                <h4>Maria Santos</h4>
+                <span>5/5 ★★★★★</span>
+                <span>Regular Guest</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"We loved the family-style menu. Great atmosphere and fast delivery."</p>
+                <h4>Rex Tan</h4>
+                <span>5/5 ★★★★★</span>
+                <span>Online Customer</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"Best restaurant in the city for comfort food. Highly recommended!"</p>
+                <h4>Leslie Cruz</h4>
+                <span>5/5 ★★★★★</span>
+                <span>Food Blogger</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location -->
+    <section class="location" id="location">
+        <div class="heading"><h1>Find Us</h1></div>
+        <div class="location-content">
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.123456789012!2d121.0745!3d14.5534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c94b8fae5123%3A0x123456789abcdef!2sTaguig%2C%20Metro%20Manila%2C%20Philippines!5e0!3m2!1sen!2sus!4v1700220000000" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="location-details">
+                <h3>Visit Kanto Familia Restaurant</h3>
+                <p>123 Culinary Avenue, Hagonoy Village, Taguig City</p>
+                <p><a href="tel:+639635165395">(096) 351-65395</a> • <a href="mailto:contact@kantofamilia.ph">contact@kantofamilia.ph</a></p>
+                <p>Open daily 10:00AM - 10:00PM</p>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="main.js"></script>
+    <script>
+
+
+      function updateAboutProfile() {
+        const user = getCurrentUser();
+        const heroTitle = document.getElementById('about-welcome');
+        const heroDesc = document.getElementById('about-desc');
+        if (user) {
+          if (heroTitle) heroTitle.textContent = `Welcome back, ${user.username}!`;
+          if (heroDesc) heroDesc.textContent = 'Thanks for being part of the family. Explore new deals, updated menu, and create your next order.';
+        } else {
+          if (heroTitle) heroTitle.textContent = 'Discover Fresh, Family-Grown Food';
+          if (heroDesc) heroDesc.textContent = 'Join us and enjoy organic produce, premium spices and more. Register now for exclusive member benefits.';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateNavbar();
+        updateAboutProfile();
+        document.getElementById('helpForm').addEventListener('submit', submitHelpReport);
+      });
+    </script>
+</body>
+</html>
